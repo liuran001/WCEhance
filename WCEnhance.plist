@@ -1,7 +1,10 @@
 {
 	Filter = {
 		Bundles = (
-			"com.xingin.discover",
+			"com.tencent.xin",
+		);
+		Executables = (
+			"WeChat",
 		);
 	};
 }
