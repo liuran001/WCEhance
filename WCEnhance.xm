@@ -49,7 +49,7 @@
 	NSBundle *bundle = [NSBundle mainBundle];
 	NSString *version = [bundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
 	
-	if ([version isEqualToString:@"8.0.55"]) {
+if ([version compare:@"8.0.55" options:NSNumericSearch] != NSOrderedAscending) {
 		UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onCloseBtnClick:)];
 		tapGesture.cancelsTouchesInView = NO;
 		[self addGestureRecognizer:tapGesture];
