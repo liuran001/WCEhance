@@ -5,7 +5,7 @@
 @end
 
 @interface WCC2CImageScrollView : UIView
-
+- (void)handleTapGesture:(UITapGestureRecognizer *)gesture;
 @end
 
 %hook WCTableViewCellLeftConfig
@@ -49,16 +49,39 @@
 	NSBundle *bundle = [NSBundle mainBundle];
 	NSString *version = [bundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
 	
-if ([version compare:@"8.0.55" options:NSNumericSearch] != NSOrderedAscending) {
-		UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onCloseBtnClick:)];
-		tapGesture.cancelsTouchesInView = NO;
-		[self addGestureRecognizer:tapGesture];
+	if ([version compare:@"8.0.55" options:NSNumericSearch] != NSOrderedAscending) {
+		BOOL hasGesture = NO;
+		for (UIGestureRecognizer *gesture in self.gestureRecognizers) {
+			if ([gesture isKindOfClass:[UITapGestureRecognizer class]]) {
+				hasGesture = YES;
+				break;
+			}
+		}
+		
+		if (!hasGesture) {
+			UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
+			[self addGestureRecognizer:tap];
+		}
 	}
 	
 	NSArray *subviews = [self.subviews copy];
 	for (UIView *subview in subviews) {
 		if ([subview class] == [UIView class]) {
-			[subview setHidden:YES];
+			[subview removeFromSuperview];
+		}
+	}
+}
+
+%new
+- (void)handleTapGesture:(UITapGestureRecognizer *)gesture {
+	CGPoint location = [gesture locationInView:self];
+	CGFloat width = self.bounds.size.width;
+	CGFloat edgeWidth = width * 0.2;
+	
+	if (location.x <= edgeWidth || location.x >= (width - edgeWidth)) {
+		SEL closeSelector = NSSelectorFromString(@"onCloseBtnClick:");
+		if ([self respondsToSelector:closeSelector]) {
+			[self performSelector:closeSelector withObject:nil];
 		}
 	}
 }
