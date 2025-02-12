@@ -19,6 +19,9 @@
 	if ([r isEqualToString:@"订单与卡包"]) {
 		return @"卡包";
 	}
+        if ([r isEqualToString:@"小店订单与卡包"]) {
+		return @"卡包";
+	}
 	if ([r isEqualToString:@"支付与服务"]) {
 		return @"服务";
 	}
