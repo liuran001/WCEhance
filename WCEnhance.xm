@@ -34,8 +34,10 @@
 	%orig;
 
 	if ([accessibilityLabel isEqualToString:@"我的⼆维码"]) {
-
 		self.hidden = YES;
+                [self removeFromSuperview];
+                self.translatesAutoresizingMaskIntoConstraints = NO; // 禁用自动布局掩码
+                self.frame = CGRectZero;
 	}
 }
 
