@@ -8,6 +8,11 @@
 - (void)handleTapGesture:(UITapGestureRecognizer *)gesture;
 @end
 
+@interface CExtendInfoOfImg : NSObject
+- (void)setImage:(id)arg1 withData:(id)arg2 isLongOriginImage:(_Bool)arg3;
+- (void)setImage:(id)arg1 withData:(id)arg2 isOriginImage:(BOOL)arg3;
+@end
+
 %hook WCTableViewCellLeftConfig
 
 - (NSString *)title {
@@ -86,4 +91,11 @@
 	}
 }
 
+%end
+
+%hook CExtendInfoOfImg
+%new
+- (void)setImage:(id)arg1 withData:(id)arg2 isLongOriginImage:(BOOL)arg3 {
+	[self setImage:arg1 withData:arg2 isOriginImage:arg3];
+}
 %end
